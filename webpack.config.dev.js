@@ -8,7 +8,7 @@ var config = {
   },
   devtool: "cheap-module-source-map",
   resolve: {
-    extensions: [".ts", ".tsx", ".js"]
+    extensions: [".ts", ".tsx", ".js", ".scss", ".css"]
   },
   module: {
     rules: [
@@ -16,6 +16,51 @@ var config = {
         test: /\.tsx?$/,
         use: "ts-loader",
         exclude: /node_modules/
+      },
+      {
+        test: /\.css$/,
+        use: [
+          { loader: "style-loader" },
+          {
+            loader: "typings-for-css-modules-loader",
+            options: {
+              modules: true,
+              localIdentName: "[name]-[local]-[hash:base64:6]",
+              camelCase: true,
+              sourceMap: true,
+              namedExport: true
+            }
+          }
+        ]
+      },
+      {
+        test: /\.scss$/,
+        use: [
+          { loader: "style-loader" },
+          {
+            loader: "typings-for-css-modules-loader",
+            options: {
+              modules: true,
+              localIdentName: "[name]-[local]-[hash:base64:6]",
+              camelCase: true,
+              sourceMap: true,
+              namedExport: true
+            }
+          },
+          {
+            loader: "postcss-loader",
+            options: {
+              browsers: ["last 2 versions", "ie >= 9", "Opera >= 20"],
+              sourceMap: true
+            }
+          },
+          {
+            loader: "sass-loader",
+            options: {
+              sourceMap: true
+            }
+          }
+        ]
       }
     ]
   },
